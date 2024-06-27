@@ -4,15 +4,15 @@ import signal
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
-def list_files(directory, ignore_files, exclude_extensions):
+def list_files(directory, ignore_files, exclude_files, include_extensions):
     file_list = []
     abs_directory = os.path.abspath(directory)
     for root, dirs, files in os.walk(abs_directory):
         for file in files:
-            if file in ignore_files:
+            if file in ignore_files or file in exclude_files:
                 continue
             file_extension = os.path.splitext(file)[1][1:]
-            if not file_extension or file_extension in exclude_extensions:
+            if include_extensions and file_extension not in include_extensions:
                 continue
             file_list.append(os.path.join(root, file))
     return file_list
@@ -20,13 +20,14 @@ def list_files(directory, ignore_files, exclude_extensions):
 def display_files():
     directory = entry_directory.get()
     ignore_files = entry_ignore.get().split()
-    exclude_extensions = entry_exclude.get().split()
+    exclude_files = entry_exclude.get().split()
+    include_extensions = entry_include.get().split()
     
     if not directory:
         messagebox.showerror("Error", "Please select a directory.")
         return
     
-    files = list_files(directory, ignore_files, exclude_extensions)
+    files = list_files(directory, ignore_files, exclude_files, include_extensions)
     
     listbox_files.delete(0, tk.END)
     if files:
@@ -45,7 +46,8 @@ def exclude_selected_files():
 def organize_files(mode):
     directory = entry_directory.get()
     ignore_files = entry_ignore.get().split()
-    exclude_extensions = entry_exclude.get().split()
+    exclude_files = entry_exclude.get().split()
+    include_extensions = entry_include.get().split()
 
     if not directory:
         messagebox.showerror("Error", "Please select a directory.")
@@ -54,11 +56,13 @@ def organize_files(mode):
     abs_directory = os.path.abspath(directory)
     for root, dirs, files in os.walk(abs_directory):
         for file in files:
-            if file in ignore_files:
+            if file in ignore_files or file in exclude_files:
                 continue
             
             file_extension = os.path.splitext(file)[1][1:]
-            if not file_extension or file_extension in exclude_extensions:
+            if include_extensions and file_extension not in include_extensions:
+                continue
+            if not file_extension:
                 continue
 
             extension_dir = os.path.join(abs_directory, file_extension)
@@ -117,32 +121,37 @@ label_ignore.grid(row=1, column=0, sticky=tk.W, pady=5)
 entry_ignore = ttk.Entry(frame, width=40)
 entry_ignore.grid(row=1, column=1, pady=5, padx=5)
 
-label_exclude = ttk.Label(frame, text="Exclude Extensions (space-separated):")
+label_exclude = ttk.Label(frame, text="Exclude Files (space-separated):")
 label_exclude.grid(row=2, column=0, sticky=tk.W, pady=5)
 
 entry_exclude = ttk.Entry(frame, width=40)
 entry_exclude.grid(row=2, column=1, pady=5, padx=5)
 
+label_include = ttk.Label(frame, text="Include Extensions (space-separated):")
+label_include.grid(row=3, column=0, sticky=tk.W, pady=5)
+
+entry_include = ttk.Entry(frame, width=40)
+entry_include.grid(row=3, column=1, pady=5, padx=5)
+
 button_display = ttk.Button(frame, text="Display Files", command=display_files)
-button_display.grid(row=3, columnspan=3, pady=10)
+button_display.grid(row=4, columnspan=3, pady=10)
 
 listbox_files = tk.Listbox(frame, selectmode=tk.MULTIPLE, width=60, height=15)
-listbox_files.grid(row=4, columnspan=3, pady=5)
+listbox_files.grid(row=5, columnspan=3, pady=5)
 
 button_exclude = ttk.Button(frame, text="Exclude Selected", command=exclude_selected_files)
-button_exclude.grid(row=5, column=0, pady=10)
+button_exclude.grid(row=6, column=0, pady=10)
 
 button_move = ttk.Button(frame, text="Move Files", command=lambda: organize_files('move'))
-button_move.grid(row=5, column=1, pady=10)
+button_move.grid(row=6, column=1, pady=10)
 
 button_copy = ttk.Button(frame, text="Copy Files", command=lambda: organize_files('copy'))
-button_copy.grid(row=5, column=2, pady=10)
+button_copy.grid(row=6, column=2, pady=10)
 
 button_close = ttk.Button(frame, text="Close", command=close_app)
-button_close.grid(row=6, columnspan=3, pady=10)
+button_close.grid(row=7, columnspan=3, pady=10)
 
 for child in frame.winfo_children():
     child.grid_configure(padx=5, pady=5)
 
 app.mainloop()
-
