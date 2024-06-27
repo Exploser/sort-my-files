@@ -53,6 +53,8 @@ Usage
         Close: Exit the application.
 
 Screenshot
+    ![image](https://github.com/Exploser/sort--my-files/assets/126280113/9640aadc-ecb5-47fb-92fb-4065da851d7b)
+
 
 License
 
