@@ -104,7 +104,7 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 app = tk.Tk()
-app.title("File Organizer")
+app.title("Sort my Stuff")
 
 frame = ttk.Frame(app, padding="10 10 10 10")
 frame.grid(column=0, row=0, sticky=(tk.W, tk.E, tk.N, tk.S))
