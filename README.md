@@ -1,4 +1,4 @@
-File Organizer
+# File Organizer
 
 A simple Python GUI application to organize files in a directory based on their extensions. You can ignore specific files, exclude selected files, and choose to either move or copy the files into corresponding folders.
 Features
@@ -54,10 +54,3 @@ Usage
 
 Screenshot
     ![image](https://github.com/Exploser/sort--my-files/assets/126280113/2c711a92-073d-42e1-aef8-17a79544cac7)
-
-
-
-
-License
-
-This project is licensed under the MIT License.
