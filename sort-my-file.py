@@ -28,13 +28,20 @@ def display_files():
     
     files = list_files(directory, ignore_files, exclude_extensions)
     
-    text_files.delete('1.0', tk.END)
+    listbox_files.delete(0, tk.END)
     if files:
         for file in files:
-            text_files.insert(tk.END, file + "\n")
+            listbox_files.insert(tk.END, file)
     else:
-        text_files.insert(tk.END, "No files to display.")
+        listbox_files.insert(tk.END, "No files to display.")
     
+def exclude_selected_files():
+    selected_indices = listbox_files.curselection()
+    for index in selected_indices[::-1]:  # Reverse order to avoid index shift
+        file = listbox_files.get(index)
+        entry_ignore.insert(tk.END, f"{os.path.basename(file)} ")
+        listbox_files.delete(index)
+
 def organize_files(mode):
     directory = entry_directory.get()
     ignore_files = entry_ignore.get().split()
@@ -119,17 +126,20 @@ entry_exclude.grid(row=2, column=1, pady=5, padx=5)
 button_display = ttk.Button(frame, text="Display Files", command=display_files)
 button_display.grid(row=3, columnspan=3, pady=10)
 
-text_files = tk.Text(frame, width=60, height=15)
-text_files.grid(row=4, columnspan=3, pady=5)
+listbox_files = tk.Listbox(frame, selectmode=tk.MULTIPLE, width=60, height=15)
+listbox_files.grid(row=4, columnspan=3, pady=5)
+
+button_exclude = ttk.Button(frame, text="Exclude Selected", command=exclude_selected_files)
+button_exclude.grid(row=5, column=0, pady=10)
 
 button_move = ttk.Button(frame, text="Move Files", command=lambda: organize_files('move'))
-button_move.grid(row=5, column=0, pady=10)
+button_move.grid(row=5, column=1, pady=10)
 
 button_copy = ttk.Button(frame, text="Copy Files", command=lambda: organize_files('copy'))
-button_copy.grid(row=5, column=1, pady=10)
+button_copy.grid(row=5, column=2, pady=10)
 
 button_close = ttk.Button(frame, text="Close", command=close_app)
-button_close.grid(row=5, column=2, pady=10)
+button_close.grid(row=6, columnspan=3, pady=10)
 
 for child in frame.winfo_children():
     child.grid_configure(padx=5, pady=5)
