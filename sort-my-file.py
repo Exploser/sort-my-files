@@ -5,9 +5,6 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, simpledialog
 import subprocess
 
-# Global variable to store sudo password
-sudo_password = None
-
 # Function to list files in a directory, excluding certain files, folders, and extensions
 def list_files(directory, ignore_files, exclude_files, exclude_folders, include_extensions):
     file_list = []
@@ -64,19 +61,14 @@ def exclude_selected_paths():
 
 # Function to prompt for sudo password and store it
 def get_sudo_permission():
-    global sudo_password
     sudo_password = simpledialog.askstring("Sudo Password", "Please enter your sudo password:", show='*')
     if sudo_password is None:
         messagebox.showwarning("Warning", "Sudo permission not granted.")
-        return False
-    return True
+        return None
+    return sudo_password
 
 # Function to run a command with stored sudo password
-def run_with_sudo(command):
-    global sudo_password
-    if sudo_password is None:
-        messagebox.showwarning("Warning", "Sudo permission not granted.")
-        return False
+def run_with_sudo(command, sudo_password):
     try:
         result = subprocess.run(['sudo', '-S'] + command, input=sudo_password + '\n', text=True, capture_output=True)
         if result.returncode != 0:
@@ -89,10 +81,13 @@ def run_with_sudo(command):
 
 # Function to organize files by moving or copying them based on their extensions
 def organize_files(mode):
-    if sudo_password is None:
+    sudo_password = None
+    if mode in ['move', 'copy']:
         warning = messagebox.askyesno("Warning", "Sudo permission not granted. Do you want to continue?")
         if not warning:
-            return
+            sudo_password = get_sudo_permission()
+            if not sudo_password:
+                return
 
     directory = entry_directory.get()
     ignore_files = entry_ignore.get().split()
@@ -132,9 +127,10 @@ def organize_files(mode):
 
     if commands:
         for command in commands:
-            if sudo_password is not None and not run_with_sudo(command):
-                return
-            elif sudo_password is None:
+            if sudo_password is not None:
+                if not run_with_sudo(command, sudo_password):
+                    return
+            else:
                 try:
                     if mode == 'move':
                         shutil.move(command[1], command[2])
