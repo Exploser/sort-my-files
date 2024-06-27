@@ -1,5 +1,6 @@
 import os
 import shutil
+import signal
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
@@ -65,7 +66,7 @@ def organize_files(mode):
             elif mode == 'copy':
                 shutil.copy2(source_path, destination_path)
                 print(f'Copied {file} to {extension_dir}')
-
+    
     messagebox.showinfo("Success", f"Files organized successfully by {mode}.")
 
 def select_directory():
@@ -73,6 +74,17 @@ def select_directory():
     if directory:
         entry_directory.delete(0, tk.END)
         entry_directory.insert(0, directory)
+
+def close_app():
+    app.quit()
+    app.destroy()
+
+def signal_handler(sig, frame):
+    print("Interrupt received, closing the application...")
+    close_app()
+
+# Set up the signal handler
+signal.signal(signal.SIGINT, signal_handler)
 
 app = tk.Tk()
 app.title("File Organizer")
@@ -84,13 +96,13 @@ label_directory = tk.Label(frame, text="Directory:")
 label_directory.grid(row=0, column=0, sticky=tk.W, pady=5)
 
 entry_directory = tk.Entry(frame, width=40)
-entry_directory.grid(row=0, column=1, pady=5)
+entry_directory.grid(row=0, column=1, pady=5, padx=5)
 
 button_browse = tk.Button(frame, text="Browse", command=select_directory)
 button_browse.grid(row=0, column=2, padx=5, pady=5)
 
 label_ignore = tk.Label(frame, text="Ignore Files (space-separated):")
-label_ignore.grid(row=1, column=0, sticky=tk.W, pady=5)
+label_ignore.grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
 
 entry_ignore = tk.Entry(frame, width=40)
 entry_ignore.grid(row=1, column=1, pady=5)
@@ -112,6 +124,9 @@ button_move.grid(row=5, column=0, pady=10)
 
 button_copy = tk.Button(frame, text="Copy Files", command=lambda: organize_files('copy'))
 button_copy.grid(row=5, column=1, pady=10)
+
+button_close = tk.Button(frame, text="Close", command=close_app)
+button_close.grid(row=5, column=2, pady=10)
 
 app.mainloop()
 
