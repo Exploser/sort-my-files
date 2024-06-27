@@ -53,7 +53,8 @@ Usage
         Close: Exit the application.
 
 Screenshot
-    ![image](https://github.com/Exploser/sort--my-files/assets/126280113/9fd08933-48c0-4ed6-9636-d42fcf823285)
+    ![image](https://github.com/Exploser/sort--my-files/assets/126280113/2c711a92-073d-42e1-aef8-17a79544cac7)
+
 
 
 
