@@ -87,7 +87,7 @@ def organize_files(mode):
         if not warning:
             sudo_password = get_sudo_permission()
             if not sudo_password:
-                return
+                sudo_password = None
 
     directory = entry_directory.get()
     ignore_files = entry_ignore.get().split()
