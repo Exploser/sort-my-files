@@ -1,7 +1,7 @@
 # File Organizer
 
 A simple Python GUI application to organize files in a directory based on their extensions. You can ignore specific files, exclude selected files, and choose to either move or copy the files into corresponding folders.
-Features
+## Features
 
     Browse and select a directory to organize.
     Ignore files by specifying their names.
@@ -9,27 +9,23 @@ Features
     Organize files by moving or copying them into folders based on their extensions.
     Graceful handling of interrupts (e.g., Ctrl+C).
 
-Requirements
-
+## Requirements
     Python 3.x
     tkinter module (comes pre-installed with Python)
 
-Installation
-
+## Installation
     Clone the repository:
-
-    bash
-
-git clone https://github.com/Exploser/sort--my-files.git
-cd sort-my-files
+        #bash
+        git clone https://github.com/Exploser/sort--my-files.git
+        cd sort-my-files
 
 Ensure tkinter is installed. On some systems, you might need to install it separately:
 
-    For Ubuntu/Debian-based systems:
+For Ubuntu/Debian-based systems:
 
-    bash
+    #bash
 
-sudo apt-get install python3-tk
+    sudo apt-get install python3-tk
 
 For Fedora/RHEL-based systems:
 
