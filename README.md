@@ -20,8 +20,8 @@ Installation
 
     bash
 
-git clone https://github.com/yourusername/file-organizer.git
-cd file-organizer
+git clone https://github.com/Exploser/sort--my-files.git
+cd sort-my-files
 
 Ensure tkinter is installed. On some systems, you might need to install it separately:
 
