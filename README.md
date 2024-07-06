@@ -3,11 +3,11 @@
 A simple Python GUI application to organize files in a directory based on their extensions. You can ignore specific files, exclude selected files, and choose to either move or copy the files into corresponding folders.
 ## Features
 
-    Browse and select a directory to organize.
-    Ignore files by specifying their names.
-    Exclude files by selecting them from the displayed list.
-    Organize files by moving or copying them into folders based on their extensions.
-    Graceful handling of interrupts (e.g., Ctrl+C).
+* Browse and select a directory to organize.
+* Ignore files by specifying their names.
+* Exclude files by selecting them from the displayed list.
+* Organize files by moving or copying them into folders based on their extensions.
+* Graceful handling of interrupts (e.g., Ctrl+C).
 
 ## Requirements
     Python 3.x
